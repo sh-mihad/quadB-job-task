@@ -1,11 +1,31 @@
 import React from 'react';
+import { toast } from 'react-hot-toast';
 import { useLoaderData } from 'react-router-dom';
 import Navbar from '../Navbar';
 
 const MovieDetails = () => {
     const movie = useLoaderData();
-    // console.log(movie);
-    const {name,image,premiered,summary}=movie
+    console.log(movie);
+    const { name, image, premiered, summary } = movie
+
+   const bookingForm=(event)=>{
+    event.preventDefault();
+    const movieName = event.target.movie.value
+    const userName = event.target.movie.value
+    const userEmail = event.target.movie.value
+    const userBookingData = {
+        movieName,
+        userEmail,
+        userName
+    }
+    localStorage.setItem('BookingData', JSON.stringify(userBookingData));
+    toast.success("Your booking is added to Loacl storage")
+
+   }
+
+
+   
+
     return (
         <div>
             <div className='shadow-xl'>
@@ -20,38 +40,24 @@ const MovieDetails = () => {
 
                                 <div className="relative bg-white rounded shadow-2xl p-7 sm:p-10">
                                     <img src={image?.original} alt="" />
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div className="w-full max-w-xl mb-12 xl:pr-16 xl:mb-0 xl:w-7/12 text-center lg:text-left">
                             <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-white sm:text-4xl sm:leading-none">
-                               {
-                                name
-                               }
-                               
+                                {
+                                    name
+                                }
+
                             </h2>
                             <small>premiered: {premiered}</small>
                             <p className="max-w-xl mb-4 text-base text-gray-400 md:text-lg">
                                 {
-                                   summary 
+                                    summary.slice(3, -4)
                                 }
                             </p>
-                            <a
-                                href="/"
-                                aria-label=""
-                                className="inline-flex items-center font-semibold tracking-wider transition-colors duration-200 text-teal-accent-400 hover:text-teal-accent-700"
-                            >
-                                Learn more
-                                <svg
-                                    className="inline-block w-3 ml-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 12 12"
-                                >
-                                    <path d="M9.707,5.293l-5-5A1,1,0,0,0,3.293,1.707L7.586,6,3.293,10.293a1,1,0,1,0,1.414,1.414l5-5A1,1,0,0,0,9.707,5.293Z" />
-                                </svg>
-
-                            </a>
+                            <label htmlFor="movie-modal" className="btn bg-red-500 border-none">Book Now</label>
                         </div>
                         <svg
                             viewBox="0 0 52 24"
@@ -75,6 +81,41 @@ const MovieDetails = () => {
                                 height="24"
                             />
                         </svg>
+                        {/* The button to open modal */}
+                        {/* <label htmlFor="movie-modal" className="btn">open modal</label> */}
+
+                        {/* Put this part before </body> tag */}
+                        <input type="checkbox" id="movie-modal" className="modal-toggle" />
+                        <div className="modal">
+                            <div className="modal-box relative">
+                                <label htmlFor="movie-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                               <form onSubmit={bookingForm}>
+                               <div className="card-body">
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Movie Name</span>
+                                        </label>
+                                        <input type="text" name='movie' placeholder="" className="input input-bordered" defaultValue={name} readOnly />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Your Name</span>
+                                        </label>
+                                        <input name='userName' type="text" placeholder="Enter Your Name" className="input input-bordered" />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Your Email</span>
+                                        </label>
+                                        <input name='userEmail' type="email" placeholder="Enter Your Email" className="input input-bordered" />
+                                    </div>
+                                    <div className="form-control mt-6">
+                                        <button className=''><label className="btn btn-primary"  htmlFor="movie-modal"  >Book Now</label></button>
+                                    </div>
+                                </div>
+                               </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
